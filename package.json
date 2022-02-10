@@ -1,0 +1,27 @@
+{
+  "name": "battleship",
+  "version": "1.0.0",
+  "description": "The Battleship project from The Odin Project.  https://www.theodinproject.com/paths/full-stack-javascript/courses/javascript/lessons/battleship",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/travis1010/battleship.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/travis1010/battleship/issues"
+  },
+  "homepage": "https://github.com/travis1010/battleship#readme",
+  "devDependencies": {
+    "@babel/preset-env": "^7.16.11",
+    "webpack": "^5.68.0",
+    "webpack-cli": "^4.9.2"
+  },
+  "dependencies": {
+    "jest": "^27.5.0"
+  }
+}
