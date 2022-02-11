@@ -9,11 +9,42 @@
   <link rel="stylesheet" href="./style.css">
 </head>
 <body>
-  <div id="game-container">
-    <div id="place-ships-banner"><h1>Place Your Ships</h1>
-    <p>Press Spacebar to toggle orientation.</p></div>
-    <div id="cpu-board" class="game-board"></div>
-    <div id="player-board" class="game-board"></div>
+  <div id="left-container">
+    <h1>Battleship</h1>
+    <p>
+      Battleship (also known as Battleships or Sea Battle) is a 
+      strategy type guessing game for two players. It is played on 
+      ruled grids (paper or board) on which each player's fleet of 
+      warships are marked. The locations of the fleets are concealed 
+      from the other player. Players alternate turns calling "shots" 
+      at the other player's ships, and the objective of the game is 
+      to destroy the opposing player's fleet. 
+      <a href="https://en.wikipedia.org/wiki/Battleship_(game)" 
+      target = "_blank">More Info</a>
+    </p> <br>
+    <h2>Instructions</h2> <br>
+    <p>
+      First place your ships.  Then take turns taking shots at the 
+      enemy.  If your shot misses you will see a white peg.  If you 
+      hit your opponents ship, you see a red peg and you get to go 
+      again.</p>
+
+  </div>
+  <div id="middle-container">
+    <div id="game-container">
+      <div id="place-ships-banner"><h1>Place Your Ships</h1>
+      <p>Press Spacebar to toggle orientation.</p></div>
+      <div id="game-over-banner">
+        <h1 id="result-message"></h1>
+        <button onclick="newGame()">New Game</button>
+      </div>
+      <div id="cpu-board" class="game-board"></div>
+      <div id="player-board" class="game-board"></div>
+    </div>
+  </div>
+  <div id="right-container">
+    <div id="cpu-score" class="scoreboard"></div>
+    <div id="player-score" class="scoreboard"></div>
   </div>
 </body>
 </html>
