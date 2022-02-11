@@ -165,6 +165,25 @@ function createGameboard() {
       } else {
         throw new Error('Invalid Ship Position!')
       }
+    },
+
+    isHittableTile(coords) {
+      const x = coords[0];
+      const y = coords[1];
+
+      if(x > 9 || y > 9 || x < 0 || y < 0) {
+        return false;
+      }
+
+      const tile = this.grid[y][x];
+
+      if(tile === 'hit' || tile === 'miss' || tile === 'sunk') {
+        return false
+      } else {
+        console.log(coords, 'was deemed hittable for AI')
+        return true;
+      }
+      
     }
 
   }
@@ -200,18 +219,14 @@ const cpuAI = {
     for (let y = 0; y < 10; y++) {
       for (let x = 0; x < 10; x++) {
         if (gameboard.grid[y][x] === 'hit') {
-          if (x + 1 < 10 && gameboard.grid[y][x + 1] !== 'hit' && 
-          gameboard.grid[y][x + 1] !== 'miss' && gameboard.grid[y][x + 1] !== 'sunk') {
+          if(gameboard.isHittableTile([x + 1, y])) {
             return [x + 1, y];
-          } else if (x - 1 >= 0 && gameboard.grid[y][x - 1] !== 'hit' && 
-          gameboard.grid[y][x - 1] !== 'miss' && gameboard.grid[y][x - 1] !== 'sunk') {
+          } else if(gameboard.isHittableTile([x - 1, y])) {
             return [x - 1, y];
-          } else if (y + 1 < 10 && gameboard.grid[y + 1][x] !== 'hit' && 
-          gameboard.grid[y + 1][x] !== 'miss' && gameboard.grid[y + 1][x] !== 'sunk') {
-            return [x, y + 1];
-          } else if (y - 1 >= 0 && gameboard.grid[y - 1][x] !== 'hit' && 
-          gameboard.grid[y - 1][x] !== 'miss' && gameboard.grid[y + 1][x] !== 'sunk') {
+          } else if(gameboard.isHittableTile([x, y - 1])) {
             return [x, y - 1];
+          } else if(gameboard.isHittableTile([x, y + 1])) {
+            return [x, y + 1];
           }
         }
       }
