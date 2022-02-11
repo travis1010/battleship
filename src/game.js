@@ -201,16 +201,16 @@ const cpuAI = {
       for (let x = 0; x < 10; x++) {
         if (gameboard.grid[y][x] === 'hit') {
           if (x + 1 < 10 && gameboard.grid[y][x + 1] !== 'hit' && 
-          gameboard.grid[y][x + 1] !== 'miss') {
+          gameboard.grid[y][x + 1] !== 'miss' && gameboard.grid[y][x + 1] !== 'sunk') {
             return [x + 1, y];
           } else if (x - 1 >= 0 && gameboard.grid[y][x - 1] !== 'hit' && 
-          gameboard.grid[y][x - 1] !== 'miss') {
+          gameboard.grid[y][x - 1] !== 'miss' && gameboard.grid[y][x - 1] !== 'sunk') {
             return [x - 1, y];
           } else if (y + 1 < 10 && gameboard.grid[y + 1][x] !== 'hit' && 
-          gameboard.grid[y + 1][x] !== 'miss') {
+          gameboard.grid[y + 1][x] !== 'miss' && gameboard.grid[y + 1][x] !== 'sunk') {
             return [x, y + 1];
           } else if (y - 1 >= 0 && gameboard.grid[y - 1][x] !== 'hit' && 
-          gameboard.grid[y - 1][x] !== 'miss') {
+          gameboard.grid[y - 1][x] !== 'miss' && gameboard.grid[y + 1][x] !== 'sunk') {
             return [x, y - 1];
           }
         }
