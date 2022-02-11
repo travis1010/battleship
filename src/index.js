@@ -1,7 +1,7 @@
 import { createGameboard, cpuAI } from './game.js'
 
-const playerGB = createGameboard();
-const cpuGB = createGameboard();
+let playerGB = createGameboard();
+let cpuGB = createGameboard();
 
 let placeShips = true;
 let placeShipPos = 'horizontal';
@@ -55,9 +55,11 @@ function displayPlayerGameboard(gameboard) {
         
         if(placeShipPos == 'horizontal') {
           newTile.addEventListener('mouseenter', function (e) {
-          let x = Number(newTile.getAttribute('data-coords')[1]);
           if (x + length > 10) {
             length = 10 - x;
+            tileClass = 'illegal-tile';
+          }
+          if (!gameboard.shipFits(length, [x,y], 'horizontal')) {
             tileClass = 'illegal-tile';
           }
           let currentTile = newTile;
@@ -70,7 +72,6 @@ function displayPlayerGameboard(gameboard) {
           newTile.addEventListener('mouseleave', function (e) {
             let currentTile = newTile;
             for (let i = 0; i < length; i++) {
-        
               currentTile.classList.remove(tileClass);
               currentTile = currentTile.nextSibling;
             }
@@ -78,9 +79,12 @@ function displayPlayerGameboard(gameboard) {
         } else if (placeShipPos == 'vertical'){
 
           newTile.addEventListener('mouseenter', function (e) {
-            let y = Number(newTile.getAttribute('data-coords')[4]);
+        
             if (y + length > 10) {
               length = 10 - y;
+              tileClass = 'illegal-tile';
+            }
+            if (!gameboard.shipFits(length, [x,y], 'vertical')) {
               tileClass = 'illegal-tile';
             }
             let currentTile = newTile;
@@ -166,18 +170,21 @@ function getNthSibling(element, n) {
 window.clickTile = (coords) => {
   const hit = cpuGB.receiveAttack(coords);
   displayCpuGameboard(cpuGB)
-  
+  updateScore();
   if (hit) {
     if (cpuGB.allShipsSunk()) {
       console.log('you win!!!!')
+      gameOver('You win!');
     }
     return;
   }
 
   while (cpuAI.takeShot(playerGB)) {
     displayPlayerGameboard(playerGB);
+    updateScore();
     if (playerGB.allShipsSunk()) {
-      console.log('you LOSE!!!!')
+      console.log('you LOSE!!!!');
+      gameOver('You lose!');
       return;
     }
   }
@@ -194,6 +201,7 @@ window.placePlayerShip = (coords) => {
     }
     displayPlayerGameboard(playerGB);
   }
+  updateScore();
 }
 
 document.addEventListener('keydown', event => {
@@ -206,6 +214,62 @@ document.addEventListener('keydown', event => {
     displayPlayerGameboard(playerGB);
   }
 })
+
+function gameOver(resultMsg) {
+  document.getElementById('game-over-banner').style.display = 'flex';
+  document.getElementById('result-message').textContent = resultMsg;
+}
+
+window.newGame = () => {
+  playerGB = createGameboard();
+  cpuGB = createGameboard();
+  placeShips = true;
+  document.getElementById('game-over-banner').style.display = 'none';
+  document.getElementById('place-ships-banner').style.display = 'flex';
+  displayPlayerGameboard(playerGB);
+
+  cpuAI.placeShips(cpuGB);
+  displayCpuGameboard(cpuGB);
+}
+
+function updateScore() {
+
+  if (!placeShips) {
+    const cpuScoreboard = document.getElementById('cpu-score');
+    while(cpuScoreboard.firstChild) {
+    cpuScoreboard.removeChild(cpuScoreboard.firstChild)
+    }
+
+    cpuGB.ships.forEach((ship) => {
+      cpuScoreboard.appendChild(drawShip(ship));
+    });
+  }
+  
+
+  const playerScoreboard = document.getElementById('player-score');
+  while(playerScoreboard.firstChild) {
+    playerScoreboard.removeChild(playerScoreboard.firstChild)
+  }
+  
+  playerGB.ships.forEach((ship) => {
+    playerScoreboard.appendChild(drawShip(ship));
+  });
+
+}
+
+function drawShip(ship) {
+  const newShip = document.createElement('div');
+  newShip.classList.add('mini-ship')
+  for (let i = 0; i < ship.length; i++) {
+    const segment = document.createElement('div');
+    segment.classList.add('ship-segment')
+    if (ship.sunk) {
+      segment.classList.add('sunk-ship-segment')
+    }
+    newShip.appendChild(segment)
+  }
+  return newShip;
+}
 
 displayPlayerGameboard(playerGB);
 

@@ -56,7 +56,6 @@ function createGameboard() {
     placeShip(length, coords, position = 'horizontal') {
       const ship = createShip(length, coords, position);
       if(!this.shipFits(ship.length, coords, position)) {
-        console.log('ship cannot be placed there');
         return false;
       }
 
@@ -188,6 +187,39 @@ const cpuAI = {
   },
 
   takeShot(gameboard) {
+    let nextToHit = this.findNextToHit(gameboard);
+    console.log(nextToHit);
+    if (nextToHit) {
+      return gameboard.receiveAttack(nextToHit);
+    }
+    
+    return gameboard.receiveAttack(this.getRandom(gameboard));
+  },
+
+  findNextToHit(gameboard) {
+    for (let y = 0; y < 10; y++) {
+      for (let x = 0; x < 10; x++) {
+        if (gameboard.grid[y][x] === 'hit') {
+          if (x + 1 < 10 && gameboard.grid[y][x + 1] !== 'hit' && 
+          gameboard.grid[y][x + 1] !== 'miss') {
+            return [x + 1, y];
+          } else if (x - 1 >= 0 && gameboard.grid[y][x - 1] !== 'hit' && 
+          gameboard.grid[y][x - 1] !== 'miss') {
+            return [x - 1, y];
+          } else if (y + 1 < 10 && gameboard.grid[y + 1][x] !== 'hit' && 
+          gameboard.grid[y + 1][x] !== 'miss') {
+            return [x, y + 1];
+          } else if (y - 1 >= 0 && gameboard.grid[y - 1][x] !== 'hit' && 
+          gameboard.grid[y - 1][x] !== 'miss') {
+            return [x, y - 1];
+          }
+        }
+      }
+    }
+    return false
+  },
+
+  getRandom(gameboard) {
     let x = Math.floor(Math.random() * 10);
     let y = Math.floor(Math.random() * 10);
     while(gameboard.grid[y][x] === 'miss' || gameboard.grid[y][x] === 'hit' || 
@@ -195,9 +227,9 @@ const cpuAI = {
       x = Math.floor(Math.random() * 10);
       y = Math.floor(Math.random() * 10);
     }
-    console.log('ai shot taken at', x, y);
-    return gameboard.receiveAttack([x, y]);
+    return [x, y];
   }
+ 
 }
 
 
