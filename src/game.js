@@ -207,7 +207,6 @@ const cpuAI = {
 
   takeShot(gameboard) {
     let nextToHit = this.findNextToHit(gameboard);
-    console.log(nextToHit);
     if (nextToHit) {
       return gameboard.receiveAttack(nextToHit);
     }

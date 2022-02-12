@@ -178,16 +178,47 @@ window.clickTile = (coords) => {
     }
     return;
   }
+  /*
+  let cpuTurn = true;
+  gameOver("Opponent's turn");
+  while (cpuTurn) {
+    setTimeout(function() {
+      console.log('delay successful');
+      cpuTurn = cpuAI.takeShot(playerGB);
+      console.log(cpuTurn);
+      displayPlayerGameboard(playerGB);
+      updateScore();
+      if (playerGB.allShipsSunk()) {
+        console.log('you LOSE!!!!');
+        gameOver('You lose!');
+        return;
+      }
+    }, 1000);
 
-  while (cpuAI.takeShot(playerGB)) {
-    displayPlayerGameboard(playerGB);
-    updateScore();
-    if (playerGB.allShipsSunk()) {
-      console.log('you LOSE!!!!');
-      gameOver('You lose!');
-      return;
-    }
   }
+  */
+
+  let cpuTurn = true;
+
+  document.getElementById('cpu-turn-banner').style.display = 'flex';
+
+  (async () => {
+    while (await new Promise(resolve => setTimeout(() => resolve(cpuTurn), 500))) {
+      cpuTurn = cpuAI.takeShot(playerGB)
+      displayPlayerGameboard(playerGB);
+      updateScore();
+      if (playerGB.allShipsSunk()) {
+        document.getElementById('cpu-turn-banner').style.display = 'none';
+        gameOver('You lose!');
+        return;
+      }
+      
+    }
+    document.getElementById('cpu-turn-banner').style.display = 'none';
+  })();
+
+
+  
   displayPlayerGameboard(playerGB);
 }
 
@@ -269,6 +300,10 @@ function drawShip(ship) {
     newShip.appendChild(segment)
   }
   return newShip;
+}
+
+function delay(time) {
+  return new Promise(resolve => setTimeout(resolve, time));
 }
 
 displayPlayerGameboard(playerGB);
