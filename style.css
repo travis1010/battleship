@@ -133,7 +133,7 @@ a {
   background-color: rgb(88, 120, 146);
 }
 
-#place-ships-banner, #game-over-banner {
+#place-ships-banner, #game-over-banner, #cpu-turn-banner {
   position: absolute;
   border: 1px solid #646464;
   height: 400px;
@@ -152,7 +152,7 @@ h1 {
   margin-bottom: 14px;
 }
 
-#game-over-banner {
+#game-over-banner, #cpu-turn-banner {
   display: none;
 }
 
